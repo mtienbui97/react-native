@@ -1,0 +1,60 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>CURRENCY CONVERTER</h1>
+    <p>Select input currency</p>
+    <ul>
+      <li><input type="radio" name="currency" value="USD" />USD</li>
+      <li><input type="radio" name="currency" value="EUR" />EUR</li>
+    </ul>
+    <input type="number" id="amount" />
+    <button onclick="convertToVnd()">Convert Currency</button>
+    <div>
+      <span id="final-result"></span>
+    </div>
+  </body>
+  <script>
+    function callApi(currency, input) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(
+        "GET",
+        "https://free.currconv.com/api/v7/convert?q=" +
+          currency +
+          "_VND&compact=ultra&apiKey=954476f165b94d9b2491"
+      );
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          updateResults(JSON.parse(xhr.responseText), currency, input);
+        } else {
+          alert("Request failed.  Returned status of " + xhr.status);
+        }
+      };
+      xhr.send();
+    }
+
+    function updateResults(response, currency, input) {
+      //console.log(response, currency);
+      var result = response[currency + "_VND"] * input;
+      document.getElementById("final-result").innerHTML =
+        input + " " + currency + " is " + result + " VND";
+    }
+
+    function convertToVnd() {
+      let input = document.getElementById("amount").value;
+      let radios = document.getElementsByName("currency");
+
+      for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+          currency = radios[i].value;
+        }
+      }
+
+      callApi(currency, input);
+    }
+  </script>
+</html>

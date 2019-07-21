@@ -1,0 +1,73 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="message">Please input your number!</h1>
+    <input type="number" id="inputNumber" />
+    <button id="guessButton">Guess</button>
+    <div>
+      <h4>Show past guess:</h4>
+      <p id="pastGuess"></p>
+    </div>
+  </body>
+  <script>
+    //pastGuess variable declaration
+    var pastGuess = "";
+    //guess turns limit
+    var guessTurns = 10;
+    //create random number
+    var max = 100;
+    var min = 1;
+    var randomNumber = Math.floor(Math.random() * 100 + 1);
+    console.log(randomNumber);
+
+    //bind the event to elements.
+    let button = document.getElementById("guessButton");
+    button.addEventListener("click", function() {
+      //count guess turn
+      guessTurns = guessTurns - 1;
+      //get value from user input and covert string to integer
+      let userGuess = parseInt(document.getElementById("inputNumber").value);
+
+      //show the message and guesses remainding
+      if (userGuess > randomNumber) {
+        document.getElementById("message").style.backgroundColor = "red";
+        document.getElementById("message").innerHTML =
+          "Sorry your guess is too high!" +
+          "You have " +
+          guessTurns +
+          " guesses left.";
+      } else if (userGuess < randomNumber) {
+        document.getElementById("message").style.backgroundColor = "red";
+        document.getElementById("message").innerHTML =
+          "Sorry your guess is too low!" +
+          "You have " +
+          guessTurns +
+          " guesses left.";
+      } else if (userGuess == randomNumber) {
+        document.getElementById("message").style.backgroundColor = "green!";
+        document.getElementById("message").innerHTML =
+          "Congratulations!! You guessed correctly.";
+        if (!alert("Congratulation! Click OK for replay.")) {
+          window.location.reload();
+        }
+      }
+
+      //show past guesses
+      pastGuess = pastGuess + userGuess + "<br />";
+      document.getElementById("pastGuess").innerHTML = pastGuess;
+      //limit guesses
+      console.log(guessTurns);
+      if (guessTurns == 0) {
+        if (!alert("You lose! Click OK for replay.")) {
+          window.location.reload();
+        }
+      }
+    });
+    //
+  </script>
+</html>
